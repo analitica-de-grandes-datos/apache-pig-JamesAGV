@@ -21,4 +21,4 @@ grouped = GROUP words BY word;
 
 wordcount = FOREACH grouped GENERATE group, COUNT(words);
 
-STORE wordcount INTO 'output';
+STORE wordcount INTO 'output' USING PigStorage(',');
