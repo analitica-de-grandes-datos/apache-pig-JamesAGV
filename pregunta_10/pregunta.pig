@@ -21,3 +21,16 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
+lines = LOAD 'data.csv' USING PigStorage(',') AS (f1:INT, f2:CHARARRAY, f3:CHARARRAY, f4:CHARARRAY, f5:CHARARRAY, f6:INT);
+
+apellidos = FOREACH lines GENERATE f3 AS apellido;
+
+apellidos_diff = DISTINCT apellidos;
+
+apellidos = FOREACH apellidos_diff GENERATE apellido AS inicial, SIZE(apellido) AS apellido_size;
+
+apellidos_ordenados = ORDER apellidos BY apellido_size DESC, inicial;
+
+apellidos_ordenados = LIMIT apellidos_ordenados 5;
+
+STORE apellidos_ordenados INTO 'output' USING PigStorage(',');
