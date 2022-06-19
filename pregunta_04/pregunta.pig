@@ -28,3 +28,11 @@ $ pig -x local -f pregunta.pig
 
          >>> Escriba su respuesta a partir de este punto <<<
 */
+
+lines = LOAD 'data.csv' USING PigStorage(',') AS (f1:INT, f2:INT, f3:CHARARRAY, f4:CHARARRAY, f5:DOUBLE, f6:DOUBLE, f7:CHARARRAY, f8:CHARARRAY, f9:CHARARRAY, f10:INT, f11:CHARARRAY, f12:CHARARRAY);
+
+lines = FOREACH lines GENERATE f1, f2, f3;
+
+lines_limit = LIMIT lines 10;
+
+STORE lines_limit INTO 'output' USING PigStorage(',');
