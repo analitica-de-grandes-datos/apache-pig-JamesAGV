@@ -27,4 +27,6 @@ lines = LOAD 'data.csv' USING PigStorage(',') AS (f1:INT, f2:CHARARRAY, f3:CHARA
 
 colores = FOREACH lines GENERATE f5 AS color;
 
-STORE colores INTO 'output' USING PigStorage(',');
+salida = FILTER colores BY ($0 matches '.*b.*');
+
+STORE salida INTO 'output' USING PigStorage(',');
