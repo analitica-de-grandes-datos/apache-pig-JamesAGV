@@ -26,5 +26,5 @@ first_name_color = FOREACH lines GENERATE f2 AS first_name,f5 AS color;
 
 salida = FILTER first_name_color BY ($0 matches '.*Z.*') AND color=='blue';
 
-STORE salida INTO 'output';
+STORE salida INTO 'output' USING PigStorage(' ');
 
