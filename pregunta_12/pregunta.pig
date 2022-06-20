@@ -33,7 +33,7 @@ lines = LOAD 'data.csv' USING PigStorage(',') AS (f1:INT, f2:CHARARRAY, f3:CHARA
 
 --apellidos = FOREACH lines GENERATE REGEX_EXTRACT(f3,'(H)(.*)',1),REGEX_EXTRACT(f3,'(H)(.*)',2);
 --apellidos = FOREACH lines GENERATE REGEX_EXTRACT(f3,'([D-K].*)',1);
-apellidos = FOREACH lines GENERATE REGEX_EXTRACT_ALL(f3,'([D-K].*)') AS last_name;
+apellidos = FOREACH lines GENERATE REGEX_EXTRACT(f3,'([D-K].*)',1) AS last_name;
 
 salida = FILTER apellidos BY last_name is not null;
 
