@@ -34,3 +34,24 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
+lines = LOAD 'data.csv' USING PigStorage(',') AS (f1:INT, f2:CHARARRAY, f3:CHARARRAY, f4:CHARARRAY, f5:CHARARRAY, f6:INT);
+
+dates = FOREACH lines GENERATE ToDate(f4,'YYYY-MM-dd') AS date;
+
+salida = FOREACH dates GENERATE ToString(date,'YYYY-MM-dd'), ToString(date,'dd'), ToString(date,'d'), ToString(date,'EEE');
+
+salida = FOREACH salida GENERATE $0, $1, $2, REPLACE($3,'Thu', 'jueves');
+
+salida = FOREACH salida GENERATE $0, $1, $2, REPLACE($3,'Sun', 'domingo');
+
+salida = FOREACH salida GENERATE $0, $1, $2, REPLACE($3,'Mon', 'lunes');
+
+salida = FOREACH salida GENERATE $0, $1, $2, REPLACE($3,'Tue', 'martes');
+
+salida = FOREACH salida GENERATE $0, $1, $2, REPLACE($3,'Wed', 'miercoles');
+
+salida = FOREACH salida GENERATE $0, $1, $2, REPLACE($3,'Fri', 'viernes');
+
+salida = FOREACH salida GENERATE $0, $1, $2, SUBSTRING($3,0,3), $3;
+
+STORE salida INTO 'output' USING PigStorage(',');
