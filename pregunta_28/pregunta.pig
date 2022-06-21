@@ -23,3 +23,12 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
+lines = LOAD 'data.csv' USING PigStorage(',') AS (f1:INT, f2:CHARARRAY, f3:CHARARRAY, f4:CHARARRAY, f5:CHARARRAY, f6:INT);
+
+dates = FOREACH lines GENERATE GetYear(ToDate(f4,'YYYY-MM-dd')) AS date:CHARARRAY;
+
+salida = FOREACH dates GENERATE date, SUBSTRING(date,2,4);
+
+STORE salida INTO 'output' USING PigStorage(',');
+
+

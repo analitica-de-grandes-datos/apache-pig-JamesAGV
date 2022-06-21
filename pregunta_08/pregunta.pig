@@ -17,3 +17,14 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
+lines = LOAD 'data.tsv' AS (f1:CHARARRAY, f2:BAG{t: TUPLE(p:CHARARRAY)}, f3:MAP[]);
+
+cantidades = FOREACH lines GENERATE FLATTEN(f2) AS letra, FLATTEN(f3) AS (clave, valor);
+
+cantidades = FOREACH cantidades GENERATE (letra,clave) AS tupla;
+
+cantidades_group = GROUP cantidades BY tupla;
+
+cantidades = FOREACH cantidades_group GENERATE group, COUNT(cantidades);
+
+STORE cantidades INTO 'output' USING PigStorage(',');
